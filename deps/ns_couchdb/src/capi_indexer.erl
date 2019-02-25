@@ -67,7 +67,7 @@ design_doc_view_loop(Mod, Req, DbName, DDocId, ViewName, VBucketsDict,
 %% @doc Returns a vBucket if it is run on a subset (single vBucket) only, else
 %% it returns an atom called "full_set"
 -spec run_on_subset(#httpd{}, binary()) ->  non_neg_integer()|full_set.
-run_on_subset(#httpd{path_parts=[_, _, DName, _, _]}=Req, Name) ->
+run_on_subset(#httpd{path_parts=[_,_,_, _, DName, _, _]}=Req, Name) ->
     case DName of
         <<"dev_", _/binary>> ->
             case get_value("full_set", (Req#httpd.mochi_req):parse_qs()) =/= "true"

@@ -26,12 +26,12 @@ handle_view_req(Req, Db, DDoc) when Db#db.filepath =/= undefined ->
     couch_httpd_view:handle_view_req(Req, Db, DDoc);
 
 handle_view_req(#httpd{method='GET',
-                       path_parts=[_, _, DName, _, ViewName]}=Req,
+                       path_parts=[_,_,_, _, DName, _, ViewName]}=Req,
                 Db, _DDoc) ->
     capi_indexer:do_handle_view_req(mapreduce_view, Req, Db#db.name, DName, ViewName);
 
 handle_view_req(#httpd{method='POST',
-                       path_parts=[_, _, DName, _, ViewName]}=Req,
+                       path_parts=[_,_,_, _, DName, _, ViewName]}=Req,
                 Db, _DDoc) ->
     couch_httpd:validate_ctype(Req, "application/json"),
     capi_indexer:do_handle_view_req(mapreduce_view, Req, Db#db.name, DName, ViewName);
