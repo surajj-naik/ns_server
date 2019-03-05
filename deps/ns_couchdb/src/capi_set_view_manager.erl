@@ -238,6 +238,7 @@ handle_call({set_vbucket_states, WantedStates, RebalanceStates}, _From,
             {reply, ok, State2}
     end;
 handle_call({suspend, Ref}, From, #state{local_docs = Docs} = State) ->
+    ?log_info("DBA: The function reached ~p",["capi_set_view_manager:handle_call({suspend,Ref})"]),
     gen_server:reply(From, ok),
 
     receive
@@ -258,6 +259,7 @@ handle_call({suspend, Ref}, From, #state{local_docs = Docs} = State) ->
                     %% we need to redefine set view whenever document changes;
                     %% but previous group for current value of design document
                     %% can still be alive; thus using maybe_define_group
+                    ?log_info("DBA: The function reached Deleted of ~p and DDocId is ~p",["capi_set_view_manager:handle_call",DDocId]),
                     maybe_define_group(DDocId, NewState),
                     change_vbucket_states(NewState);
                 true ->

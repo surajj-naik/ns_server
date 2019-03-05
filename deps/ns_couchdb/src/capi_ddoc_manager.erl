@@ -168,6 +168,7 @@ is_deleted(#doc{deleted = Deleted}) ->
     Deleted.
 
 save_docs([NewDoc], State) ->
+    ?log_info("DBA: The function reached ~p and child state is ~p",["capi_ddoc_manager:save_docs",State]),
     try
         {ok, do_save_doc(NewDoc, State)}
     catch throw:{invalid_design_doc, _} = Error ->
@@ -235,12 +236,13 @@ load_local_docs(Bucket) ->
         ok = couch_db:close(Db)
     end.
 
-do_save_doc(#doc{id = Id} = Doc,
+do_save_doc(#doc{id = Id} = Doc, 
             #state{bucket = Bucket,
                    event_manager = EventManager,
                    local_docs = Docs} = State) ->
 
     Ref = make_ref(),
+    ?log_info("DBA: The function reached ~p and EventManager is ~p",["capi_ddoc_manager:do_save_doc",EventManager]),
     gen_event:sync_notify(EventManager, {suspend, Ref}),
 
     try
