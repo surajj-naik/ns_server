@@ -90,7 +90,6 @@ handle_call({interactive_update, Doc}, _From,
                    child_state = ChildState,
                    replicator = Replicator} = State) ->
     Rand = misc:rand_uniform(0, 16#100000000),
-    ?log_info("DBA: The function reached ~p and ~p",["replicated_storage", Module]),
     RandBin = <<Rand:32/integer>>,
     {NewRev, FoundType} =
         case Module:find_doc(Module:get_id(Doc), ChildState) of
@@ -110,7 +109,6 @@ handle_call({interactive_update, Doc}, _From,
 
     case Module:is_deleted(Doc) andalso FoundType =/= existent of
         true ->
-            ?log_info("DBA: The function reached ~p",["replicated_storage and true"]),
             {reply, {not_found, FoundType}, State};
         false ->
             NewDoc = Module:set_revision(Doc, NewRev),

@@ -168,7 +168,6 @@ is_deleted(#doc{deleted = Deleted}) ->
     Deleted.
 
 save_docs([NewDoc], State) ->
-    ?log_info("DBA: The function reached ~p and child state is ~p",["capi_ddoc_manager:save_docs",State]),
     try
         {ok, do_save_doc(NewDoc, State)}
     catch throw:{invalid_design_doc, _} = Error ->
@@ -242,7 +241,6 @@ do_save_doc(#doc{id = Id} = Doc,
                    local_docs = Docs} = State) ->
 
     Ref = make_ref(),
-    ?log_info("DBA: The function reached ~p and EventManager is ~p",["capi_ddoc_manager:do_save_doc",EventManager]),
     gen_event:sync_notify(EventManager, {suspend, Ref}),
 
     try

@@ -239,7 +239,6 @@ get_db_info(#db{name = DbName}) ->
 with_master_vbucket(#db{name = DbName}, Fun) ->
     with_master_vbucket(DbName, Fun);
 with_master_vbucket(DbName, Fun) ->
-    ?LOG_INFO("DBB: The function reached ~p",[with_master_vbucket]),
     DB = capi_utils:must_open_master_vbucket(DbName),
     try
         Fun(DB)
@@ -249,7 +248,6 @@ with_master_vbucket(DbName, Fun) ->
 
 update_doc(#db{filepath = undefined, name=Name},
            #doc{id = <<"_design/",_/binary>>} = Doc, _Options) ->
-               ?LOG_INFO("DBA: The function reaches ~p",["capi_frontend:update_doc"]),
     case capi_ddoc_manager:update_doc(Name, Doc) of
         ok ->
             ok;
@@ -339,7 +337,6 @@ get_missing_revs(Db, JsonDocIdRevs) ->
     Result.
 
 open_doc(#db{filepath = undefined} = Db, <<"_design/",_/binary>> = DocId, Options) ->
-    ?LOG_INFO("DBB: Function reached here ~p",[open_doc]),
     with_master_vbucket(Db,
                         fun (RealDb) ->
                                 couch_db:open_doc(RealDb, DocId, Options)
